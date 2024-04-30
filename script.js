@@ -1,5 +1,8 @@
 // script.js
 const taskForm = document.getElementById('taskForm');
+const taskTitle = document.getElementById('taskTitle');
+const dueDate = document.getElementById('dueDate');
+const addTaskBtn = document.querySelector('#taskForm button[type="submit"]');
 const taskList = document.getElementById('taskList');
 const completedTasks = document.getElementById('completedTasks');
 const editTaskModal = document.getElementById('editTaskModal');
@@ -52,19 +55,24 @@ function renderTasks() {
     }
 }
 
-function addTask(event) {
-    event.preventDefault();
-    const taskTitle = document.getElementById('taskTitle').value;
-    const dueDate = document.getElementById('dueDate').value;
+function addTask() {
+    const taskTitleValue = taskTitle.value.trim();
+    const dueDateValue = dueDate.value.trim();
 
-    if (taskTitle && dueDate) {
-        const newTask = { title: taskTitle, dueDate, completed: false };
+    if (taskTitleValue && dueDateValue) {
+        const newTask = { title: taskTitleValue, dueDate: dueDateValue, completed: false };
         tasks.push(newTask);
         saveTasksToLocalStorage();
         renderTasks();
-        event.target.reset();
+        taskTitle.value = '';
+        dueDate.value = '';
     }
 }
+
+
+addTaskBtn.addEventListener('click', addTask);
+renderTasks();
+showSection('homeSection');
 
 function editTask(index) {
     const task = tasks[index];
